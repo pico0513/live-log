@@ -20,14 +20,53 @@
 
         <hr>
 
-        <h2 class="section-title">🎤 参戦ライブ</h2>
+        <!-- ホーム画面 -->
+        <div id="home">
 
-        <p class="count">0</p>
-        <p>公演</p>
+            <h2 class="section-title">🎤 参戦ライブ</h2>
 
-        <button onclick="showMessage()">＋ ライブを記録</button>
-　　　　　　<script src="script.js"></script>
+            <p class="count">0</p>
+            <p>公演</p>
+
+            <button onclick="showForm()">＋ ライブを記録</button>
+
+        </div>
+
+
+        <!-- ライブ登録画面 -->
+        <div id="form" style="display: none;">
+
+            <h2 class="section-title">＋ ライブを記録</h2>
+
+            <label>アーティスト</label>
+            <input type="text" id="artist" placeholder="例：浦島坂田船">
+
+            <label>ツアー名</label>
+            <input type="text" id="tour" placeholder="例：○○TOUR 2026">
+
+            <label>公演日</label>
+            <input type="date" id="date">
+
+            <label>会場</label>
+            <input type="text" id="venue" placeholder="例：日本武道館">
+
+            <label>チケット代</label>
+            <input type="number" id="ticketPrice" placeholder="例：8800">
+
+            <label>感想</label>
+            <textarea id="memo" placeholder="ライブの感想を書こう！"></textarea>
+
+            <br><br>
+
+            <button onclick="saveLive()">保存する</button>
+
+            <button onclick="showHome()">戻る</button>
+
+        </div>
+
     </div>
+
+    <script src="script.js"></script>
 
 </body>
 
