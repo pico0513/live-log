@@ -1,43 +1,110 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     margin: 0;
-    padding: 32px 20px;
-    background: #ffffff;
-    color: #222222;
+    background: #f8f8f8;
+    color: #222;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
 }
 
 .container {
     max-width: 600px;
     margin: 0 auto;
+    padding: 32px 20px 60px;
 }
 
 h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
+    margin: 0;
+    font-size: 38px;
+    letter-spacing: -1px;
 }
 
 .subtitle {
-    color: #777777;
-    margin-bottom: 40px;
+    margin-top: 8px;
+    color: #777;
+    font-size: 15px;
+}
+
+hr {
+    margin: 28px 0;
+    border: none;
+    border-top: 1px solid #ddd;
 }
 
 .section-title {
-    font-size: 24px;
-    margin-bottom: 8px;
+    margin-top: 0;
+    font-size: 27px;
 }
 
 .count {
-    font-size: 48px;
+    display: inline-block;
+    margin: 10px 0 0;
+    font-size: 42px;
     font-weight: bold;
-    margin: 0 0 24px;
 }
 
 button {
     border: none;
     border-radius: 12px;
-    padding: 14px 20px;
+    padding: 13px 20px;
+    margin-top: 15px;
+    background: #222;
+    color: white;
     font-size: 16px;
-    background: #222222;
-    color: #ffffff;
+    font-weight: bold;
     cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* ライブ登録フォーム */
+
+#form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 14px;
+    background: white;
+    color: #222;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #888;
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+#form button:first-of-type {
+    background: #8b5cf6;
+}
+
+#form button:last-of-type {
+    margin-left: 8px;
+    background: #ddd;
+    color: #555;
 }
