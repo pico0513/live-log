@@ -110,8 +110,7 @@
     <h2 class="section-title">＋ ライブを記録</h2>
 
     <!-- 公演情報 -->
-
-    <h3 class="form-heading">🎫 公演情報</h3>
+    <h3>🎫 公演情報</h3>
 
     <label>アーティスト</label>
     <input type="text" id="artist" placeholder="例：センラ">
@@ -124,16 +123,6 @@
 
     <label>開演時間</label>
     <input type="time" id="startTime">
-
-    <label>昼公演／夜公演</label>
-    <select id="performanceTime">
-        <option value="">選択してください</option>
-        <option value="昼">昼公演</option>
-        <option value="夜">夜公演</option>
-    </select>
-
-    <label>会場</label>
-    <input type="text" id="venue" placeholder="例：日本武道館">
 
     <label>都道府県</label>
     <select id="prefecture">
@@ -187,64 +176,56 @@
         <option>沖縄県</option>
     </select>
 
-    <label>会場キャパ</label>
+    <label>会場</label>
+    <input type="text" id="venue" placeholder="例：日本武道館">
+
+    <label>キャパ</label>
     <input type="number" id="capacity" placeholder="例：14000">
 
     <label>出演メンバー</label>
     <input type="text" id="members" placeholder="例：センラ">
 
-    
-    <!-- 座席 -->
-
-    <h3 class="form-heading">💺 座席</h3>
-
     <label>座席</label>
-    <input type="text" id="seat" placeholder="例：アリーナA3ブロック 10列15番">
+    <input type="text" id="seat" placeholder="例：アリーナA3ブロック 5列10番">
 
-    <label>座席位置メモ</label>
-    <textarea id="seatPosition"
-        placeholder="例：センステの右側。かなり前方！"></textarea>
+    <label>チケット代</label>
+    <input type="number" id="ticketPrice" placeholder="例：8800">
+
+    
+    <!-- セトリ -->
+    <h3>🎵 セトリ</h3>
+
+    <label>セトリ</label>
+    <textarea id="setlist"
+        placeholder="1. ○○&#10;2. ○○&#10;3. ○○&#10;&#10;MC&#10;&#10;4. ○○"></textarea>
 
 
     <!-- 思い出 -->
-
-    <h3 class="form-heading">🥹 思い出</h3>
+    <h3>🥹 思い出</h3>
 
     <label>感想</label>
-    <textarea id="memo"
-        placeholder="ライブの感想を書こう！"></textarea>
+    <textarea id="memo" placeholder="ライブの感想を書こう！"></textarea>
 
-    <label>ファンサ</label>
-    <textarea id="fanService"
-        placeholder="例：目が合った、手を振ってもらった！"></textarea>
-
+    
     <label>一緒に行った人</label>
-    <input type="text" id="companions"
-        placeholder="例：○○ちゃん">
+    <input type="text" id="companions" placeholder="例：○○ちゃん">
+
+    <label>当日の天気</label>
+    <select id="weather">
+        <option value="">記録しない</option>
+        <option value="☀️ 晴れ">☀️ 晴れ</option>
+        <option value="☁️ 曇り">☁️ 曇り</option>
+        <option value="🌧️ 雨">🌧️ 雨</option>
+        <option value="❄️ 雪">❄️ 雪</option>
+    </select>
 
     <label>写真</label>
     <input type="file" id="photos" accept="image/*" multiple>
 
-    <p class="form-note">※写真は最大10枚まで登録できます。</p>
+    <label>座席位置メモ</label>
+    <textarea id="seatPosition"
+        placeholder="例：ステージから見て右側。センステに近かった！"></textarea>
 
-    <label>当日の天気</label>
-    <select id="weather">
-        <option value="">選択してください</option>
-        <option value="晴れ">☀️ 晴れ</option>
-        <option value="くもり">☁️ くもり</option>
-        <option value="雨">🌧️ 雨</option>
-        <option value="雪">❄️ 雪</option>
-        <option value="その他">その他</option>
-    </select>
-
-
-    <!-- お金 -->
-
-    <h3 class="form-heading">💰 お金</h3>
-
-    <label>チケット代</label>
-    <input type="number" id="ticketPrice"
-        placeholder="例：8800">
 
     <br><br>
 
