@@ -1,3 +1,42 @@
+// アーティストマスタ
+const artists = [
+    {
+        id: 1,
+        name: "浦島坂田船",
+        displayName: "浦島坂田船",
+        color: "#4CAF50",
+        group: "浦島坂田船"
+    },
+    {
+        id: 2,
+        name: "うらたぬき",
+        displayName: "うらたぬき",
+        color: "#55C85A",
+        group: "浦島坂田船"
+    },
+    {
+        id: 3,
+        name: "志麻",
+        displayName: "志麻",
+        color: "#A66DD4",
+        group: "浦島坂田船"
+    },
+    {
+        id: 4,
+        name: "となりの坂田。",
+        displayName: "となりの坂田。",
+        color: "#E53935",
+        group: "浦島坂田船"
+    },
+    {
+        id: 5,
+        name: "センラ",
+        displayName: "センラ",
+        color: "#F4C542",
+        group: "浦島坂田船"
+    }
+];
+
 function showForm() {
     document.getElementById("home").style.display = "none";
     document.getElementById("form").style.display = "block";
