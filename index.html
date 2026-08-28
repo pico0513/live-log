@@ -14,26 +14,92 @@
 
     <div class="container">
 
-        <h1>🎫 LiveLog</h1>
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>🎫 LiveLog</h1>
+            <p class="subtitle">わたしのライブ記録</p>
+        </header>
 
-        <p class="subtitle">わたしのライブ記録</p>
-
-        <hr>
 
         <!-- ホーム画面 -->
         <div id="home">
 
-            <h2 class="section-title">🎤 参戦ライブ</h2>
+            <!-- 次のライブ -->
+            <section class="home-section">
 
-            <p class="count" id="count">0</p>
-            <p>公演</p>
+                <p class="section-label">NEXT LIVE</p>
+
+                <div class="next-live-card">
+
+                    <p class="days">あと <span>--</span> 日</p>
+
+                    <h2>💛 センラ</h2>
+
+                    <p class="tour-name">○○ TOUR 2026</p>
+
+                    <p class="live-info">
+                        📅 2026/09/15<br>
+                        🕕 18:00<br>
+                        📍 日本武道館
+                    </p>
+
+                    <button>ライブ詳細を見る</button>
+
+                </div>
+
+            </section>
+
+
+            <!-- 前のライブ -->
+            <section class="home-section">
+
+                <p class="section-label">LAST LIVE</p>
+
+                <div class="simple-card">
+
+                    <p class="days">前のライブから <strong>--</strong> 日</p>
+
+                    <p>まだライブの記録がありません</p>
+
+                </div>
+
+            </section>
+
+
+            <!-- 1年前の今日 -->
+            <section class="home-section">
+
+                <p class="section-label">ON THIS DAY</p>
+
+                <div class="simple-card">
+
+                    <h2>🥹 1年前の今日は…</h2>
+
+                    <p>まだこの日のライブ記録がありません</p>
+
+                </div>
+
+            </section>
+
+
+            <!-- 総参戦数 -->
+            <section class="total-section">
+
+                <p class="section-label">TOTAL LIVE</p>
+
+                <p class="count" id="count">0</p>
+
+                <p>公演</p>
+
+            </section>
+
+
+            <!-- ライブ登録 -->
+            <button class="add-button" onclick="showForm()">
+                ＋ ライブを記録
+            </button>
 
             <div id="liveList"></div>
-
-<button onclick="showForm()">＋ ライブを記録</button>
-            
-
-            
 
         </div>
 
