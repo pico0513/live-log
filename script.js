@@ -108,3 +108,9 @@ function displayLives() {
 }
 
 displayLives();
+
+function showDetail() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("form").style.display = "none";
+    document.getElementById("detail").style.display = "block";
+}
