@@ -105,35 +105,154 @@
 
 
         <!-- ライブ登録画面 -->
-        <div id="form" style="display: none;">
+<div id="form" style="display: none;">
 
-            <h2 class="section-title">＋ ライブを記録</h2>
+    <h2 class="section-title">＋ ライブを記録</h2>
 
-            <label>アーティスト</label>
-            <input type="text" id="artist" placeholder="例：浦島坂田船">
+    <!-- 公演情報 -->
 
-            <label>ツアー名</label>
-            <input type="text" id="tour" placeholder="例：○○TOUR 2026">
+    <h3 class="form-heading">🎫 公演情報</h3>
 
-            <label>公演日</label>
-            <input type="date" id="date">
+    <label>アーティスト</label>
+    <input type="text" id="artist" placeholder="例：センラ">
 
-            <label>会場</label>
-            <input type="text" id="venue" placeholder="例：日本武道館">
+    <label>ツアー名</label>
+    <input type="text" id="tour" placeholder="例：GOSSIP">
 
-            <label>チケット代</label>
-            <input type="number" id="ticketPrice" placeholder="例：8800">
+    <label>公演日</label>
+    <input type="date" id="date">
 
-            <label>感想</label>
-            <textarea id="memo" placeholder="ライブの感想を書こう！"></textarea>
+    <label>開演時間</label>
+    <input type="time" id="startTime">
 
-            <br><br>
+    <label>昼公演／夜公演</label>
+    <select id="performanceTime">
+        <option value="">選択してください</option>
+        <option value="昼">昼公演</option>
+        <option value="夜">夜公演</option>
+    </select>
 
-            <button onclick="saveLive()">保存する</button>
+    <label>会場</label>
+    <input type="text" id="venue" placeholder="例：日本武道館">
 
-            <button onclick="showHome()">戻る</button>
+    <label>都道府県</label>
+    <select id="prefecture">
+        <option value="">選択してください</option>
+        <option>北海道</option>
+        <option>青森県</option>
+        <option>岩手県</option>
+        <option>宮城県</option>
+        <option>秋田県</option>
+        <option>山形県</option>
+        <option>福島県</option>
+        <option>茨城県</option>
+        <option>栃木県</option>
+        <option>群馬県</option>
+        <option>埼玉県</option>
+        <option>千葉県</option>
+        <option>東京都</option>
+        <option>神奈川県</option>
+        <option>新潟県</option>
+        <option>富山県</option>
+        <option>石川県</option>
+        <option>福井県</option>
+        <option>山梨県</option>
+        <option>長野県</option>
+        <option>岐阜県</option>
+        <option>静岡県</option>
+        <option>愛知県</option>
+        <option>三重県</option>
+        <option>滋賀県</option>
+        <option>京都府</option>
+        <option>大阪府</option>
+        <option>兵庫県</option>
+        <option>奈良県</option>
+        <option>和歌山県</option>
+        <option>鳥取県</option>
+        <option>島根県</option>
+        <option>岡山県</option>
+        <option>広島県</option>
+        <option>山口県</option>
+        <option>徳島県</option>
+        <option>香川県</option>
+        <option>愛媛県</option>
+        <option>高知県</option>
+        <option>福岡県</option>
+        <option>佐賀県</option>
+        <option>長崎県</option>
+        <option>熊本県</option>
+        <option>大分県</option>
+        <option>宮崎県</option>
+        <option>鹿児島県</option>
+        <option>沖縄県</option>
+    </select>
 
-        </div>
+    <label>会場キャパ</label>
+    <input type="number" id="capacity" placeholder="例：14000">
+
+    <label>出演メンバー</label>
+    <input type="text" id="members" placeholder="例：センラ">
+
+    
+    <!-- 座席 -->
+
+    <h3 class="form-heading">💺 座席</h3>
+
+    <label>座席</label>
+    <input type="text" id="seat" placeholder="例：アリーナA3ブロック 10列15番">
+
+    <label>座席位置メモ</label>
+    <textarea id="seatPosition"
+        placeholder="例：センステの右側。かなり前方！"></textarea>
+
+
+    <!-- 思い出 -->
+
+    <h3 class="form-heading">🥹 思い出</h3>
+
+    <label>感想</label>
+    <textarea id="memo"
+        placeholder="ライブの感想を書こう！"></textarea>
+
+    <label>ファンサ</label>
+    <textarea id="fanService"
+        placeholder="例：目が合った、手を振ってもらった！"></textarea>
+
+    <label>一緒に行った人</label>
+    <input type="text" id="companions"
+        placeholder="例：○○ちゃん">
+
+    <label>写真</label>
+    <input type="file" id="photos" accept="image/*" multiple>
+
+    <p class="form-note">※写真は最大10枚まで登録できます。</p>
+
+    <label>当日の天気</label>
+    <select id="weather">
+        <option value="">選択してください</option>
+        <option value="晴れ">☀️ 晴れ</option>
+        <option value="くもり">☁️ くもり</option>
+        <option value="雨">🌧️ 雨</option>
+        <option value="雪">❄️ 雪</option>
+        <option value="その他">その他</option>
+    </select>
+
+
+    <!-- お金 -->
+
+    <h3 class="form-heading">💰 お金</h3>
+
+    <label>チケット代</label>
+    <input type="number" id="ticketPrice"
+        placeholder="例：8800">
+
+    <br><br>
+
+    <button onclick="saveLive()">保存する</button>
+
+    <button onclick="showHome()">戻る</button>
+
+</div>
 
     </div>
 
