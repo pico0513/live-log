@@ -347,3 +347,56 @@ select:focus {
     font-size: 13px;
     color: #888;
 }
+
+/* ライブ詳細画面 */
+
+.live-info {
+    margin: 20px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e5e5;
+}
+
+.live-info p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.setlist {
+    margin-top: 20px;
+}
+
+.setlist-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    font-size: 16px;
+}
+
+.setlist-number {
+    width: 30px;
+    font-weight: bold;
+    color: #888;
+}
+
+.setlist-item.special {
+    background: #f5f5f5;
+    color: #777;
+}
+
+.memory-box {
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e5e5;
+}
+
+.memory-box p {
+    margin: 10px 0 20px;
+}
