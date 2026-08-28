@@ -1,5 +1,3 @@
-alert("新しいscript.jsが読み込まれています！");
-
 function showForm() {
     document.getElementById("home").style.display = "none";
     document.getElementById("form").style.display = "block";
