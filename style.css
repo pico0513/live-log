@@ -2,18 +2,41 @@
     box-sizing: border-box;
 }
 
+:root {
+    --accent: #f4c400;
+    --accent-light: #fff8d9;
+    --text: #222;
+    --sub-text: #777;
+    --border: #e8e8e8;
+    --card: #ffffff;
+    --background: #f8f8f8;
+}
+
 body {
     margin: 0;
-    background: #f8f8f8;
-    color: #222;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-        "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Helvetica Neue",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
 }
 
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 32px 20px 60px;
+    padding: 35px 20px 80px;
+}
+
+/* ====================
+   ヘッダー
+==================== */
+
+.header {
+    margin-bottom: 35px;
 }
 
 h1 {
@@ -23,38 +46,179 @@ h1 {
 }
 
 .subtitle {
-    margin-top: 8px;
-    color: #777;
+    margin: 8px 0 0;
+    color: var(--sub-text);
     font-size: 15px;
 }
 
 hr {
-    margin: 28px 0;
+    margin: 0 0 35px;
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--border);
 }
 
-.section-title {
-    margin-top: 0;
-    font-size: 27px;
+
+/* ====================
+   ホーム
+==================== */
+
+.home-section {
+    margin-bottom: 32px;
 }
 
-.count {
-    display: inline-block;
-    margin: 10px 0 0;
-    font-size: 42px;
+.section-label {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #888;
+}
+
+
+/* ====================
+   次のライブ
+==================== */
+
+.next-live-card {
+    padding: 25px;
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.days {
+    margin: 0 0 18px;
+    font-size: 18px;
+}
+
+.days span {
+    font-size: 34px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.next-live-card h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+}
+
+.tour-name {
+    margin: 0 0 20px;
+    font-size: 17px;
+    color: #555;
+}
+
+.live-info {
+    margin: 0;
+    line-height: 2;
+    font-size: 15px;
+    color: #555;
+}
+
+.next-live-card button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+/* ====================
+   シンプルカード
+==================== */
+
+.simple-card {
+    padding: 20px;
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.simple-card .days {
+    font-size: 17px;
+}
+
+.simple-card strong {
+    font-size: 24px;
+}
+
+.simple-card h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.simple-card p:last-child {
+    margin-bottom: 0;
+    color: var(--sub-text);
+}
+
+
+/* ====================
+   総参戦数
+==================== */
+
+.total-section {
+    margin: 40px 0;
+    padding: 25px;
+    text-align: center;
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.total-section .count {
+    margin: 0;
+    font-size: 48px;
     font-weight: bold;
 }
+
+.total-section > p:last-child {
+    margin: 3px 0 0;
+    color: var(--sub-text);
+}
+
+
+/* ====================
+   ライブ登録ボタン
+==================== */
+
+.add-button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 0;
+
+    border: none;
+    border-radius: 14px;
+
+    background: var(--accent);
+    color: #222;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.add-button:hover {
+    opacity: 0.85;
+}
+
+
+/* ====================
+   ボタン共通
+==================== */
 
 button {
     border: none;
     border-radius: 12px;
     padding: 13px 20px;
     margin-top: 15px;
+
     background: #222;
     color: white;
+
     font-size: 16px;
     font-weight: bold;
+
     cursor: pointer;
 }
 
@@ -62,16 +226,25 @@ button:hover {
     opacity: 0.8;
 }
 
-/* ライブ登録フォーム */
+
+/* ====================
+   ライブ登録フォーム
+==================== */
 
 #form {
     margin-top: 20px;
+}
+
+.section-title {
+    margin-top: 0;
+    font-size: 27px;
 }
 
 label {
     display: block;
     margin-top: 20px;
     margin-bottom: 7px;
+
     font-size: 14px;
     font-weight: bold;
     color: #555;
@@ -80,18 +253,22 @@ label {
 input,
 textarea {
     width: 100%;
-    border: 1px solid #ddd;
+
+    border: 1px solid var(--border);
     border-radius: 12px;
+
     padding: 14px;
+
     background: white;
     color: #222;
+
     font-size: 16px;
     outline: none;
 }
 
 input:focus,
 textarea:focus {
-    border-color: #888;
+    border-color: var(--accent);
 }
 
 textarea {
@@ -100,7 +277,8 @@ textarea {
 }
 
 #form button:first-of-type {
-    background: #8b5cf6;
+    background: var(--accent);
+    color: #222;
 }
 
 #form button:last-of-type {
@@ -109,12 +287,18 @@ textarea {
     color: #555;
 }
 
+
+/* ====================
+   ライブ一覧
+==================== */
+
 .live-card {
-    margin-top: 25px;
+    margin-top: 20px;
     padding: 20px;
+
     background: white;
     border-radius: 16px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--border);
 }
 
 .live-card h3 {
