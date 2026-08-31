@@ -53,15 +53,34 @@ const artists = [
 
 function hideAllScreens() {
 
-    const home = document.getElementById("home");
-    const form = document.getElementById("form");
-    const detail = document.getElementById("detail");
-    const stats = document.getElementById("stats");
+    const home =
+        document.getElementById("home");
 
-    if (home) home.style.display = "none";
-    if (form) form.style.display = "none";
-    if (detail) detail.style.display = "none";
-    if (stats) stats.style.display = "none";
+    const form =
+        document.getElementById("form");
+
+    const detail =
+        document.getElementById("detail");
+
+    const stats =
+        document.getElementById("stats");
+
+
+    if (home) {
+        home.style.display = "none";
+    }
+
+    if (form) {
+        form.style.display = "none";
+    }
+
+    if (detail) {
+        detail.style.display = "none";
+    }
+
+    if (stats) {
+        stats.style.display = "none";
+    }
 
 }
 
@@ -74,7 +93,8 @@ function showForm() {
 
     hideAllScreens();
 
-    document.getElementById("form").style.display = "block";
+    document.getElementById("form").style.display =
+        "block";
 
 }
 
@@ -87,7 +107,8 @@ function showHome() {
 
     hideAllScreens();
 
-    document.getElementById("home").style.display = "block";
+    document.getElementById("home").style.display =
+        "block";
 
     displayLives();
 
@@ -102,7 +123,8 @@ function showStats() {
 
     hideAllScreens();
 
-    document.getElementById("stats").style.display = "block";
+    document.getElementById("stats").style.display =
+        "block";
 
     updateStats();
 
@@ -171,9 +193,11 @@ async function saveLive() {
             .getElementById("companion3")
             .value
 
-    ].filter(
-        name => name.trim() !== ""
-    );
+    ].filter(function (name) {
+
+        return name.trim() !== "";
+
+    });
 
 
     // ====================
@@ -185,11 +209,13 @@ async function saveLive() {
 
 
     // ====================
-    // 座席位置メモ
+    // 座席位置
     // ====================
 
     const seatPosition =
-        document.getElementById("seatPosition").value;
+        document
+            .getElementById("seatPosition")
+            .value;
 
 
     // ====================
@@ -198,6 +224,7 @@ async function saveLive() {
 
     const photoInput =
         document.getElementById("photos");
+
 
     const files =
         Array.from(photoInput.files);
@@ -217,13 +244,14 @@ async function saveLive() {
     const photos =
         await Promise.all(
 
-            files.map(file => {
+            files.map(function (file) {
 
                 return new Promise(
-                    (resolve, reject) => {
+                    function (resolve, reject) {
 
                         const reader =
                             new FileReader();
+
 
                         reader.onload =
                             function () {
@@ -234,6 +262,7 @@ async function saveLive() {
 
                             };
 
+
                         reader.onerror =
                             function () {
 
@@ -242,6 +271,7 @@ async function saveLive() {
                                 );
 
                             };
+
 
                         reader.readAsDataURL(file);
 
@@ -335,10 +365,13 @@ function displayLives() {
         ) || [];
 
 
+    // ====================
     // 総公演数
+    // ====================
 
     const count =
         document.getElementById("count");
+
 
     if (count) {
 
@@ -360,15 +393,19 @@ function displayLives() {
     liveList.innerHTML = "";
 
 
+    // ====================
     // 新しいライブを上に表示
+    // ====================
 
     lives
         .slice()
         .reverse()
         .forEach(function (live) {
 
+
             const card =
                 document.createElement("div");
+
 
             card.className =
                 "live-card";
@@ -482,44 +519,55 @@ function updateStats() {
 
     if (artistStats) {
 
-        if (lives.length === 0) {
+        const artistCount = {};
+
+
+        lives.forEach(function (live) {
+
+            const name =
+                live.artist || "その他";
+
+
+            if (!artistCount[name]) {
+
+                artistCount[name] = 0;
+
+            }
+
+
+            artistCount[name]++;
+
+        });
+
+
+        const sortedArtists =
+            Object.entries(artistCount)
+                .sort(
+                    function (a, b) {
+
+                        return b[1] - a[1];
+
+                    }
+                );
+
+
+        if (sortedArtists.length === 0) {
 
             artistStats.innerHTML =
                 "まだライブの記録がありません";
 
         } else {
 
-            const artistCount = {};
-
-
-            lives.forEach(function (live) {
-
-                const name =
-                    live.artist || "その他";
-
-
-                if (!artistCount[name]) {
-
-                    artistCount[name] = 0;
-
-                }
-
-
-                artistCount[name]++;
-
-            });
-
-
-            const sortedArtists =
-                Object.entries(artistCount)
-                    .sort(
-                        (a, b) => b[1] - a[1]
-                    );
-
-
             artistStats.innerHTML =
                 sortedArtists
-                    .map(function ([name, count]) {
+                    .map(function (item) {
+
+                        const name =
+                            item[0];
+
+                        const count =
+                            item[1];
+
 
                         return `
 
@@ -555,51 +603,61 @@ function updateStats() {
 
     if (yearStats) {
 
-        if (lives.length === 0) {
+        const yearCount = {};
+
+
+        lives.forEach(function (live) {
+
+            if (!live.date) {
+                return;
+            }
+
+
+            const year =
+                live.date.substring(0, 4);
+
+
+            if (!yearCount[year]) {
+
+                yearCount[year] = 0;
+
+            }
+
+
+            yearCount[year]++;
+
+        });
+
+
+        const sortedYears =
+            Object.entries(yearCount)
+                .sort(
+                    function (a, b) {
+
+                        return Number(b[0]) -
+                               Number(a[0]);
+
+                    }
+                );
+
+
+        if (sortedYears.length === 0) {
 
             yearStats.innerHTML =
                 "まだライブの記録がありません";
 
         } else {
 
-            const yearCount = {};
-
-
-            lives.forEach(function (live) {
-
-                if (!live.date) {
-                    return;
-                }
-
-
-                const year =
-                    live.date.substring(0, 4);
-
-
-                if (!yearCount[year]) {
-
-                    yearCount[year] = 0;
-
-                }
-
-
-                yearCount[year]++;
-
-            });
-
-
-            const sortedYears =
-                Object.entries(yearCount)
-                    .sort(
-                        (a, b) =>
-                            Number(b[0]) -
-                            Number(a[0])
-                    );
-
-
             yearStats.innerHTML =
                 sortedYears
-                    .map(function ([year, count]) {
+                    .map(function (item) {
+
+                        const year =
+                            item[0];
+
+                        const count =
+                            item[1];
+
 
                         return `
 
@@ -607,6 +665,188 @@ function updateStats() {
 
                                 <span>
                                     ${year}
+                                </span>
+
+                                <strong>
+                                    ${count}公演
+                                </strong>
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("");
+
+        }
+
+    }
+
+
+    // ====================
+    // 都道府県別
+    // ====================
+
+    const prefectureStats =
+        document.getElementById(
+            "prefectureStats"
+        );
+
+
+    if (prefectureStats) {
+
+        const prefectureCount = {};
+
+
+        lives.forEach(function (live) {
+
+            const prefecture =
+                live.prefecture;
+
+
+            if (!prefecture) {
+                return;
+            }
+
+
+            if (!prefectureCount[prefecture]) {
+
+                prefectureCount[prefecture] = 0;
+
+            }
+
+
+            prefectureCount[prefecture]++;
+
+        });
+
+
+        const sortedPrefectures =
+            Object.entries(prefectureCount)
+                .sort(
+                    function (a, b) {
+
+                        return b[1] - a[1];
+
+                    }
+                );
+
+
+        if (sortedPrefectures.length === 0) {
+
+            prefectureStats.innerHTML =
+                "まだ都道府県の記録がありません";
+
+        } else {
+
+            prefectureStats.innerHTML =
+                sortedPrefectures
+                    .map(function (item) {
+
+                        const name =
+                            item[0];
+
+                        const count =
+                            item[1];
+
+
+                        return `
+
+                            <div class="stat-row">
+
+                                <span>
+                                    ${name}
+                                </span>
+
+                                <strong>
+                                    ${count}公演
+                                </strong>
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("");
+
+        }
+
+    }
+
+
+    // ====================
+    // 会場別
+    // ====================
+
+    const venueStats =
+        document.getElementById(
+            "venueStats"
+        );
+
+
+    if (venueStats) {
+
+        const venueCount = {};
+
+
+        lives.forEach(function (live) {
+
+            const venue =
+                live.venue;
+
+
+            if (!venue) {
+                return;
+            }
+
+
+            if (!venueCount[venue]) {
+
+                venueCount[venue] = 0;
+
+            }
+
+
+            venueCount[venue]++;
+
+        });
+
+
+        const sortedVenues =
+            Object.entries(venueCount)
+                .sort(
+                    function (a, b) {
+
+                        return b[1] - a[1];
+
+                    }
+                );
+
+
+        if (sortedVenues.length === 0) {
+
+            venueStats.innerHTML =
+                "まだ会場の記録がありません";
+
+        } else {
+
+            venueStats.innerHTML =
+                sortedVenues
+                    .map(function (item) {
+
+                        const name =
+                            item[0];
+
+                        const count =
+                            item[1];
+
+
+                        return `
+
+                            <div class="stat-row">
+
+                                <span>
+                                    ${name}
                                 </span>
 
                                 <strong>
@@ -635,7 +875,9 @@ function showDetail() {
 
     hideAllScreens();
 
-    document.getElementById("detail").style.display = "block";
+
+    document.getElementById("detail")
+        .style.display = "block";
 
 
     const lives =
@@ -645,7 +887,9 @@ function showDetail() {
 
 
     const detailContent =
-        document.getElementById("detailContent");
+        document.getElementById(
+            "detailContent"
+        );
 
 
     if (!detailContent) {
@@ -671,6 +915,8 @@ function showDetail() {
 
     }
 
+
+    // 最新のライブ
 
     const live =
         lives[lives.length - 1];
@@ -742,8 +988,11 @@ function showDetail() {
                 ? live.setlist
                     .split("\n")
                     .map(
-                        line =>
-                            `<p>${line}</p>`
+                        function (line) {
+
+                            return `<p>${line}</p>`;
+
+                        }
                     )
                     .join("")
                 : "まだセトリが登録されていません"
@@ -763,7 +1012,10 @@ function showDetail() {
                 live.memo
                 ? `
                     <h3>感想</h3>
-                    <p>${live.memo}</p>
+
+                    <p>
+                        ${live.memo}
+                    </p>
                   `
                 : ""
             }
@@ -772,28 +1024,34 @@ function showDetail() {
             ${
                 live.companions &&
                 live.companions.length > 0
+
                 ? `
                     <p>
-                        👥 ${live.companions.join("・")}
+                        👥
+                        ${live.companions.join("・")}
                     </p>
                   `
+
                 : ""
             }
 
 
             ${
                 live.weather
+
                 ? `
                     <p>
                         🌤️ ${live.weather}
                     </p>
                   `
+
                 : ""
             }
 
 
             ${
                 live.seatPosition
+
                 ? `
                     <h3>
                         📍 座席位置メモ
@@ -803,6 +1061,7 @@ function showDetail() {
                         ${live.seatPosition}
                     </p>
                   `
+
                 : ""
             }
 
