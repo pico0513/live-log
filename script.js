@@ -1,4 +1,7 @@
-// アーティストマスタ 
+// ====================
+// アーティストマスタ
+// ====================
+
 const artists = [
     {
         id: 1,
@@ -37,15 +40,40 @@ const artists = [
     }
 ];
 
+
+// ====================
+// 画面切り替え
+// ====================
+
 function showForm() {
     document.getElementById("home").style.display = "none";
     document.getElementById("form").style.display = "block";
+
+    const detail = document.getElementById("detail");
+
+    if (detail) {
+        detail.style.display = "none";
+    }
 }
+
 
 function showHome() {
     document.getElementById("form").style.display = "none";
     document.getElementById("home").style.display = "block";
+
+    const detail = document.getElementById("detail");
+
+    if (detail) {
+        detail.style.display = "none";
+    }
+
+    displayLives();
 }
+
+
+// ====================
+// ライブ保存
+// ====================
 
 async function saveLive() {
 
@@ -61,27 +89,34 @@ async function saveLive() {
     const ticketPrice = document.getElementById("ticketPrice").value;
     const setlist = document.getElementById("setlist").value;
     const memo = document.getElementById("memo").value;
+
+    // 一緒に行った人（最大3人）
     const companions = [
-    document.getElementById("companion1").value,
-    document.getElementById("companion2").value,
-    document.getElementById("companion3").value
-].filter(name => name.trim() !== "");
+        document.getElementById("companion1").value,
+        document.getElementById("companion2").value,
+        document.getElementById("companion3").value
+    ].filter(name => name.trim() !== "");
+
     const weather = document.getElementById("weather").value;
     const seatPosition = document.getElementById("seatPosition").value;
 
-    // 写真を取得
+
+    // ====================
+    // 写真
+    // ====================
+
     const photoInput = document.getElementById("photos");
+
     const files = Array.from(photoInput.files);
 
-    // 最大10枚
     if (files.length > 10) {
         alert("写真は最大10枚まで登録できます！");
         return;
     }
 
-    // 写真をBase64に変換
     const photos = await Promise.all(
         files.map(file => {
+
             return new Promise((resolve, reject) => {
 
                 const reader = new FileReader();
@@ -95,45 +130,68 @@ async function saveLive() {
                 };
 
                 reader.readAsDataURL(file);
+
             });
+
         })
     );
 
-    // ライブ情報
+
+    // ====================
+    // ライブデータ
+    // ====================
+
     const live = {
+
         artist: artist,
         tour: tour,
         date: date,
         startTime: startTime,
+
         prefecture: prefecture,
         venue: venue,
         capacity: capacity,
         members: members,
+
         seat: seat,
-        ticketPrice: ticketPrice,
-        setlist: setlist,
-        memo: memo,
-        companions: companions,
-        weather: weather,
         seatPosition: seatPosition,
+
+        ticketPrice: ticketPrice,
+
+        setlist: setlist,
+
+        memo: memo,
+
+        companions: companions,
+
+        weather: weather,
+
         photos: photos
+
     };
 
-    // 保存済みライブを取得
+
+    // ====================
+    // 保存
+    // ====================
+
     let lives = JSON.parse(localStorage.getItem("lives")) || [];
 
-    // 追加
     lives.push(live);
 
-    // 保存
     localStorage.setItem("lives", JSON.stringify(lives));
+
 
     alert("ライブを保存しました！");
 
     showHome();
 
-    displayLives();
 }
+
+
+// ====================
+// ライブ一覧表示
+// ====================
 
 function displayLives() {
 
@@ -145,25 +203,43 @@ function displayLives() {
 
     liveList.innerHTML = "";
 
+
     lives.forEach(function(live) {
 
         const card = document.createElement("div");
 
         card.className = "live-card";
 
+
+        // 写真
         let photosHTML = "";
 
         if (live.photos && live.photos.length > 0) {
 
             photosHTML = `
                 <div class="live-photos">
+
                     ${live.photos.map(photo => `
                         <img src="${photo}" alt="ライブ写真">
                     `).join("")}
+
                 </div>
             `;
 
         }
+
+
+        // 同行者
+        let companionsHTML = "";
+
+        if (live.companions && live.companions.length > 0) {
+
+            companionsHTML = `
+                <p>👥 ${live.companions.join("・")}</p>
+            `;
+
+        }
+
 
         card.innerHTML = `
 
@@ -177,19 +253,22 @@ function displayLives() {
 
             <p>📍 ${live.prefecture || ""} ${live.venue || ""}</p>
 
-            <p>👥 ${live.members || ""}</p>
+            <p>👤 ${live.members || ""}</p>
 
             <p>💺 ${live.seat || ""}</p>
 
-            <p>💰 ¥${live.ticketPrice || ""}</p>
+            ${companionsHTML}
 
             <p>🌤️ ${live.weather || ""}</p>
+
+            <p>💰 ¥${live.ticketPrice || ""}</p>
 
             <p>${live.memo || ""}</p>
 
             ${photosHTML}
 
         `;
+
 
         liveList.appendChild(card);
 
@@ -198,8 +277,27 @@ function displayLives() {
 }
 
 
+// ====================
+// ライブ詳細画面
+// ====================
+
 function showDetail() {
+
     document.getElementById("home").style.display = "none";
+
     document.getElementById("form").style.display = "none";
-    document.getElementById("detail").style.display = "block";
+
+    const detail = document.getElementById("detail");
+
+    if (detail) {
+        detail.style.display = "block";
+    }
+
 }
+
+
+// ====================
+// 初期表示
+// ====================
+
+displayLives();
