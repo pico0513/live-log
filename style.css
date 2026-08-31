@@ -774,16 +774,13 @@ h3 {
 
 .stats-button-area {
     width: 100%;
-    margin: 24px 0 10px;
-    text-align: center;
+    margin: 14px 0 0;
 }
 
 .stats-button-area button {
-    display: inline-block;
-    width: auto;
-    min-width: 180px;
+    width: 100%;
     margin: 0;
-    padding: 14px 24px;
+    padding: 15px;
     background: #555;
     color: #fff;
     border: none;
