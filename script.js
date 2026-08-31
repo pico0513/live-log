@@ -51,36 +51,60 @@ const artists = [
 // 画面切り替え
 // ====================
 
-function showForm() {
+function hideAllScreens() {
 
-    document.getElementById("home").style.display = "none";
-
-    document.getElementById("form").style.display = "block";
-
+    const home = document.getElementById("home");
+    const form = document.getElementById("form");
     const detail = document.getElementById("detail");
+    const stats = document.getElementById("stats");
 
-    if (detail) {
-        detail.style.display = "none";
-    }
+    if (home) home.style.display = "none";
+    if (form) form.style.display = "none";
+    if (detail) detail.style.display = "none";
+    if (stats) stats.style.display = "none";
 
 }
 
 
-// ホームへ戻る
+// ====================
+// 登録画面
+// ====================
+
+function showForm() {
+
+    hideAllScreens();
+
+    document.getElementById("form").style.display = "block";
+
+}
+
+
+// ====================
+// ホーム画面
+// ====================
 
 function showHome() {
 
-    document.getElementById("form").style.display = "none";
+    hideAllScreens();
 
     document.getElementById("home").style.display = "block";
 
-    const detail = document.getElementById("detail");
-
-    if (detail) {
-        detail.style.display = "none";
-    }
-
     displayLives();
+
+}
+
+
+// ====================
+// 統計画面
+// ====================
+
+function showStats() {
+
+    hideAllScreens();
+
+    document.getElementById("stats").style.display = "block";
+
+    updateStats();
 
 }
 
@@ -128,8 +152,10 @@ async function saveLive() {
         document.getElementById("memo").value;
 
 
+    // ====================
     // 一緒に行った人
     // 最大3人
+    // ====================
 
     const companions = [
 
@@ -150,8 +176,17 @@ async function saveLive() {
     );
 
 
+    // ====================
+    // 天気
+    // ====================
+
     const weather =
         document.getElementById("weather").value;
+
+
+    // ====================
+    // 座席位置メモ
+    // ====================
 
     const seatPosition =
         document.getElementById("seatPosition").value;
@@ -300,26 +335,40 @@ function displayLives() {
         ) || [];
 
 
-    document.getElementById(
-        "count"
-    ).textContent = lives.length;
+    // 総公演数
+
+    const count =
+        document.getElementById("count");
+
+    if (count) {
+
+        count.textContent =
+            lives.length;
+
+    }
 
 
     const liveList =
-        document.getElementById(
-            "liveList"
-        );
+        document.getElementById("liveList");
+
+
+    if (!liveList) {
+        return;
+    }
 
 
     liveList.innerHTML = "";
 
 
-    lives.forEach(
-        function (live, index) {
+    // 新しいライブを上に表示
+
+    lives
+        .slice()
+        .reverse()
+        .forEach(function (live) {
 
             const card =
                 document.createElement("div");
-
 
             card.className =
                 "live-card";
@@ -328,52 +377,252 @@ function displayLives() {
             card.innerHTML = `
 
                 <h3>
-                    ${escapeHtml(
-                        live.artist || ""
-                    )}
+                    ${live.artist || ""}
                 </h3>
 
                 <p>
-                    ${escapeHtml(
-                        live.tour || ""
-                    )}
+                    ${live.tour || ""}
                 </p>
 
                 <p>
-                    📅 ${escapeHtml(
-                        live.date || ""
-                    )}
+                    📅 ${live.date || ""}
                 </p>
 
                 <p>
-                    🕐 ${escapeHtml(
-                        live.startTime || ""
-                    )}
+                    🕐 ${live.startTime || ""}
                 </p>
 
                 <p>
-                    📍 ${escapeHtml(
-                        live.prefecture || ""
-                    )}
-                    ${escapeHtml(
-                        live.venue || ""
-                    )}
+                    📍 ${live.prefecture || ""}
+                    ${live.venue || ""}
                 </p>
 
-                <button
-                    class="detail-button"
-                    onclick="showDetail(${index})"
-                >
-                    ライブ詳細を見る
-                </button>
+                ${
+                    live.members
+                    ? `<p>👥 ${live.members}</p>`
+                    : ""
+                }
+
+                ${
+                    live.seat
+                    ? `<p>💺 ${live.seat}</p>`
+                    : ""
+                }
+
+                ${
+                    live.weather
+                    ? `<p>🌤️ ${live.weather}</p>`
+                    : ""
+                }
+
+                ${
+                    live.ticketPrice
+                    ? `<p>💰 ¥${live.ticketPrice}</p>`
+                    : ""
+                }
+
+                ${
+                    live.companions &&
+                    live.companions.length > 0
+                    ? `<p>👥 ${live.companions.join("・")}</p>`
+                    : ""
+                }
+
+                ${
+                    live.memo
+                    ? `<p>${live.memo}</p>`
+                    : ""
+                }
 
             `;
 
 
             liveList.appendChild(card);
 
+        });
+
+}
+
+
+// ====================
+// 統計更新
+// ====================
+
+function updateStats() {
+
+    const lives =
+        JSON.parse(
+            localStorage.getItem("lives")
+        ) || [];
+
+
+    // ====================
+    // 総参戦公演数
+    // ====================
+
+    const statsTotal =
+        document.getElementById("statsTotal");
+
+
+    if (statsTotal) {
+
+        statsTotal.textContent =
+            lives.length;
+
+    }
+
+
+    // ====================
+    // アーティスト別
+    // ====================
+
+    const artistStats =
+        document.getElementById("artistStats");
+
+
+    if (artistStats) {
+
+        if (lives.length === 0) {
+
+            artistStats.innerHTML =
+                "まだライブの記録がありません";
+
+        } else {
+
+            const artistCount = {};
+
+
+            lives.forEach(function (live) {
+
+                const name =
+                    live.artist || "その他";
+
+
+                if (!artistCount[name]) {
+
+                    artistCount[name] = 0;
+
+                }
+
+
+                artistCount[name]++;
+
+            });
+
+
+            const sortedArtists =
+                Object.entries(artistCount)
+                    .sort(
+                        (a, b) => b[1] - a[1]
+                    );
+
+
+            artistStats.innerHTML =
+                sortedArtists
+                    .map(function ([name, count]) {
+
+                        return `
+
+                            <div class="stat-row">
+
+                                <span>
+                                    ${name}
+                                </span>
+
+                                <strong>
+                                    ${count}公演
+                                </strong>
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("");
+
         }
-    );
+
+    }
+
+
+    // ====================
+    // 年別
+    // ====================
+
+    const yearStats =
+        document.getElementById("yearStats");
+
+
+    if (yearStats) {
+
+        if (lives.length === 0) {
+
+            yearStats.innerHTML =
+                "まだライブの記録がありません";
+
+        } else {
+
+            const yearCount = {};
+
+
+            lives.forEach(function (live) {
+
+                if (!live.date) {
+                    return;
+                }
+
+
+                const year =
+                    live.date.substring(0, 4);
+
+
+                if (!yearCount[year]) {
+
+                    yearCount[year] = 0;
+
+                }
+
+
+                yearCount[year]++;
+
+            });
+
+
+            const sortedYears =
+                Object.entries(yearCount)
+                    .sort(
+                        (a, b) =>
+                            Number(b[0]) -
+                            Number(a[0])
+                    );
+
+
+            yearStats.innerHTML =
+                sortedYears
+                    .map(function ([year, count]) {
+
+                        return `
+
+                            <div class="stat-row">
+
+                                <span>
+                                    ${year}
+                                </span>
+
+                                <strong>
+                                    ${count}公演
+                                </strong>
+
+                            </div>
+
+                        `;
+
+                    })
+                    .join("");
+
+        }
+
+    }
 
 }
 
@@ -382,7 +631,12 @@ function displayLives() {
 // ライブ詳細画面
 // ====================
 
-function showDetail(index) {
+function showDetail() {
+
+    hideAllScreens();
+
+    document.getElementById("detail").style.display = "block";
+
 
     const lives =
         JSON.parse(
@@ -390,465 +644,171 @@ function showDetail(index) {
         ) || [];
 
 
-    const live =
-        lives[index];
+    const detailContent =
+        document.getElementById("detailContent");
 
 
-    if (!live) {
+    if (!detailContent) {
+        return;
+    }
 
-        alert(
-            "ライブ情報が見つかりません。"
-        );
+
+    if (lives.length === 0) {
+
+        detailContent.innerHTML = `
+
+            <h2>
+                ライブ詳細
+            </h2>
+
+            <p>
+                まだライブの記録がありません。
+            </p>
+
+        `;
 
         return;
 
     }
 
 
-    document.getElementById(
-        "home"
-    ).style.display = "none";
+    const live =
+        lives[lives.length - 1];
 
-
-    document.getElementById(
-        "form"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "detail"
-    ).style.display = "block";
-
-
-    renderDetail(live);
-
-}
-
-
-// ====================
-// 詳細画面を作る
-// ====================
-
-function renderDetail(live) {
-
-    const detailContent =
-        document.getElementById(
-            "detailContent"
-        );
-
-
-    // ====================
-    // セトリ
-    // ====================
-
-    let setlistHTML = "";
-
-
-    if (
-        live.setlist &&
-        live.setlist.trim() !== ""
-    ) {
-
-        const lines =
-            live.setlist
-                .split("\n")
-                .map(
-                    line => line.trim()
-                )
-                .filter(
-                    line => line !== ""
-                );
-
-
-        let songNumber = 0;
-
-
-        setlistHTML = lines
-            .map(line => {
-
-                const isMC =
-                    line.includes("MC");
-
-
-                const isCostume =
-                    line.includes(
-                        "衣装チェンジ"
-                    );
-
-
-                if (
-                    isMC ||
-                    isCostume
-                ) {
-
-                    return `
-
-                        <div class="setlist-item special">
-
-                            <span class="setlist-special">
-                                ${escapeHtml(line)}
-                            </span>
-
-                        </div>
-
-                    `;
-
-                }
-
-
-                songNumber++;
-
-
-                // 「1. 曲名」の番号を除去
-
-                const songName =
-                    line.replace(
-                        /^\d+\.\s*/,
-                        ""
-                    );
-
-
-                return `
-
-                    <div class="setlist-item">
-
-                        <span class="setlist-number">
-                            ${songNumber}
-                        </span>
-
-                        <span class="setlist-song">
-                            ${escapeHtml(
-                                songName
-                            )}
-                        </span>
-
-                    </div>
-
-                `;
-
-            })
-            .join("");
-
-    } else {
-
-        setlistHTML = `
-
-            <p class="empty-message">
-                セトリはまだ登録されていません
-            </p>
-
-        `;
-
-    }
-
-
-    // ====================
-    // 同行者
-    // ====================
-
-    let companionsHTML = "";
-
-
-    if (
-        live.companions &&
-        live.companions.length > 0
-    ) {
-
-        companionsHTML = `
-
-            <p>
-                👥
-                ${live.companions
-                    .map(
-                        person =>
-                            escapeHtml(person)
-                    )
-                    .join(" ・ ")
-                }
-            </p>
-
-        `;
-
-    }
-
-
-    // ====================
-    // 写真
-    // ====================
-
-    let photosHTML = "";
-
-
-    if (
-        live.photos &&
-        live.photos.length > 0
-    ) {
-
-        photosHTML = `
-
-            <div class="detail-photos">
-
-                ${live.photos
-                    .map(
-                        photo => `
-
-                            <img
-                                src="${photo}"
-                                alt="ライブ写真"
-                            >
-
-                        `
-                    )
-                    .join("")}
-
-            </div>
-
-        `;
-
-    } else {
-
-        photosHTML = `
-
-            <p class="empty-message">
-                写真はまだ登録されていません
-            </p>
-
-        `;
-
-    }
-
-
-    // ====================
-    // 詳細画面HTML
-    // ====================
 
     detailContent.innerHTML = `
 
-        <h2 class="detail-title">
-            ${escapeHtml(
-                live.artist || "ライブ"
-            )}
-        </h2>
+        <h1>
+            ${live.artist || ""}
+        </h1>
 
-
-        <p class="detail-tour">
-            ${escapeHtml(
-                live.tour || ""
-            )}
+        <p>
+            ${live.tour || ""}
         </p>
 
 
-        <!-- 公演情報 -->
-
-        <section class="detail-section">
-
-            <h3>
-                🎫 公演情報
-            </h3>
-
-            <div class="detail-card">
-
-                <p>
-                    📅
-                    ${escapeHtml(
-                        live.date || "未登録"
-                    )}
-                </p>
-
-                <p>
-                    🕐
-                    ${escapeHtml(
-                        live.startTime || "未登録"
-                    )}
-                </p>
-
-                <p>
-                    📍
-                    ${escapeHtml(
-                        live.prefecture || ""
-                    )}
-                    ${escapeHtml(
-                        live.venue || "未登録"
-                    )}
-                </p>
-
-                <p>
-                    👥 出演メンバー：
-                    ${escapeHtml(
-                        live.members || "未登録"
-                    )}
-                </p>
-
-                <p>
-                    🏟️ キャパ：
-                    ${
-                        live.capacity
-                            ? escapeHtml(
-                                live.capacity
-                            ) + "人"
-                            : "未登録"
-                    }
-                </p>
-
-                <p>
-                    💺 座席：
-                    ${escapeHtml(
-                        live.seat || "未登録"
-                    )}
-                </p>
-
-                <p>
-                    💰 チケット代：
-                    ${
-                        live.ticketPrice
-                            ? "¥" +
-                              escapeHtml(
-                                  live.ticketPrice
-                              )
-                            : "未登録"
-                    }
-                </p>
-
-            </div>
-
-        </section>
+        <h2>
+            🎫 公演情報
+        </h2>
 
 
-        <!-- セトリ -->
+        <p>
+            📅 ${live.date || ""}
+        </p>
 
-        <section class="detail-section">
+        <p>
+            🕐 ${live.startTime || ""}
+        </p>
 
-            <h3>
-                🎵 セトリ
-            </h3>
+        <p>
+            📍 ${live.prefecture || ""}
+            ${live.venue || ""}
+        </p>
 
-            <div class="setlist">
+        ${
+            live.members
+            ? `<p>👥 出演メンバー：${live.members}</p>`
+            : ""
+        }
 
-                ${setlistHTML}
+        ${
+            live.capacity
+            ? `<p>🏟️ キャパ：${live.capacity}人</p>`
+            : ""
+        }
 
-            </div>
+        ${
+            live.seat
+            ? `<p>💺 座席：${live.seat}</p>`
+            : ""
+        }
 
-        </section>
-
-
-        <!-- 思い出 -->
-
-        <section class="detail-section">
-
-            <h3>
-                🥹 思い出
-            </h3>
-
-            <div class="memory-box">
-
-                <h4>
-                    感想
-                </h4>
-
-                <p>
-                    ${
-                        live.memo
-                            ? escapeHtml(
-                                live.memo
-                            ).replace(
-                                /\n/g,
-                                "<br>"
-                            )
-                            : "感想はまだ登録されていません"
-                    }
-                </p>
+        ${
+            live.ticketPrice
+            ? `<p>💰 チケット代：¥${live.ticketPrice}</p>`
+            : ""
+        }
 
 
-                ${companionsHTML}
+        <h2>
+            🎵 セトリ
+        </h2>
 
 
-                ${
-                    live.weather
-                        ? `
-                            <p>
-                                🌤️
-                                ${escapeHtml(
-                                    live.weather
-                                )}
-                            </p>
-                        `
-                        : ""
-                }
+        <div class="detail-card">
+
+            ${
+                live.setlist
+                ? live.setlist
+                    .split("\n")
+                    .map(
+                        line =>
+                            `<p>${line}</p>`
+                    )
+                    .join("")
+                : "まだセトリが登録されていません"
+            }
+
+        </div>
 
 
-                ${
-                    live.seatPosition
-                        ? `
-                            <h4>
-                                📍 座席位置メモ
-                            </h4>
-
-                            <p>
-                                ${escapeHtml(
-                                    live.seatPosition
-                                ).replace(
-                                    /\n/g,
-                                    "<br>"
-                                )}
-                            </p>
-                        `
-                        : ""
-                }
-
-            </div>
-
-        </section>
+        <h2>
+            🥹 思い出
+        </h2>
 
 
-        <!-- 写真 -->
+        <div class="detail-card">
 
-        <section class="detail-section">
+            ${
+                live.memo
+                ? `
+                    <h3>感想</h3>
+                    <p>${live.memo}</p>
+                  `
+                : ""
+            }
 
-            <h3>
-                📸 写真
-            </h3>
 
-            ${photosHTML}
+            ${
+                live.companions &&
+                live.companions.length > 0
+                ? `
+                    <p>
+                        👥 ${live.companions.join("・")}
+                    </p>
+                  `
+                : ""
+            }
 
-        </section>
+
+            ${
+                live.weather
+                ? `
+                    <p>
+                        🌤️ ${live.weather}
+                    </p>
+                  `
+                : ""
+            }
+
+
+            ${
+                live.seatPosition
+                ? `
+                    <h3>
+                        📍 座席位置メモ
+                    </h3>
+
+                    <p>
+                        ${live.seatPosition}
+                    </p>
+                  `
+                : ""
+            }
+
+        </div>
 
     `;
-
-}
-
-
-// ====================
-// HTMLエスケープ
-// ====================
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
 
 }
 
