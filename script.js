@@ -48,6 +48,16 @@ const artists = [
 
 
 // ====================
+// 編集中のライブ
+// ====================
+
+// 新規登録の場合は -1
+// 編集中の場合はライブの配列番号
+
+let editingIndex = -1;
+
+
+// ====================
 // 画面切り替え
 // ====================
 
@@ -74,7 +84,101 @@ function showForm() {
 
     hideAllScreens();
 
+    editingIndex = -1;
+
     document.getElementById("form").style.display = "block";
+
+    resetForm();
+
+}
+
+
+// ====================
+// フォームを初期化
+// ====================
+
+function resetForm() {
+
+    const ids = [
+
+        "artist",
+        "tour",
+        "date",
+        "startTime",
+        "prefecture",
+        "venue",
+        "capacity",
+        "members",
+        "seat",
+        "ticketPrice",
+        "setlist",
+        "memo",
+        "companion1",
+        "companion2",
+        "companion3",
+        "weather",
+        "seatPosition"
+
+    ];
+
+
+    ids.forEach(function (id) {
+
+        const element =
+            document.getElementById(id);
+
+        if (element) {
+
+            element.value = "";
+
+        }
+
+    });
+
+
+    const photos =
+        document.getElementById("photos");
+
+    if (photos) {
+
+        photos.value = "";
+
+    }
+
+
+    updateFormTitle();
+
+}
+
+
+// ====================
+// フォームタイトル更新
+// ====================
+
+function updateFormTitle() {
+
+    const title =
+        document.querySelector(
+            "#form .section-title"
+        );
+
+
+    if (!title) {
+        return;
+    }
+
+
+    if (editingIndex === -1) {
+
+        title.textContent =
+            "＋ ライブを記録";
+
+    } else {
+
+        title.textContent =
+            "✏️ ライブを編集";
+
+    }
 
 }
 
@@ -87,7 +191,8 @@ function showHome() {
 
     hideAllScreens();
 
-    document.getElementById("home").style.display = "block";
+    document.getElementById("home").style.display =
+        "block";
 
     displayLives();
 
@@ -104,7 +209,8 @@ function showStats() {
 
     hideAllScreens();
 
-    document.getElementById("stats").style.display = "block";
+    document.getElementById("stats").style.display =
+        "block";
 
     updateStats();
 
@@ -121,7 +227,8 @@ function createDate(dateString) {
         return null;
     }
 
-    const parts = dateString.split("-");
+    const parts =
+        dateString.split("-");
 
     if (parts.length !== 3) {
         return null;
@@ -142,7 +249,8 @@ function createDate(dateString) {
 
 function getToday() {
 
-    const today = new Date();
+    const today =
+        new Date();
 
     return new Date(
         today.getFullYear(),
@@ -159,7 +267,8 @@ function getToday() {
 
 function getDaysDifference(date1, date2) {
 
-    const oneDay = 1000 * 60 * 60 * 24;
+    const oneDay =
+        1000 * 60 * 60 * 24;
 
     return Math.round(
         (date1 - date2) / oneDay
@@ -178,7 +287,8 @@ function formatDate(dateString) {
         return "";
     }
 
-    const parts = dateString.split("-");
+    const parts =
+        dateString.split("-");
 
     if (parts.length !== 3) {
         return dateString;
@@ -617,14 +727,27 @@ async function saveLive() {
 
 
     // ====================
+    // 既存データ
+    // ====================
+
+    let lives =
+        JSON.parse(
+            localStorage.getItem("lives")
+        ) || [];
+
+
+    // ====================
     // 写真
     // ====================
 
     const photoInput =
         document.getElementById("photos");
 
+
     const files =
-        Array.from(photoInput.files);
+        Array.from(
+            photoInput.files
+        );
 
 
     if (files.length > 10) {
@@ -638,43 +761,63 @@ async function saveLive() {
     }
 
 
-    const photos =
-        await Promise.all(
+    let photos = [];
 
-            files.map(file => {
 
-                return new Promise(
-                    (resolve, reject) => {
+    // 編集の場合
+    // 新しい写真を選んでいなければ
+    // 元の写真をそのまま使う
 
-                        const reader =
-                            new FileReader();
+    if (
+        editingIndex !== -1 &&
+        files.length === 0 &&
+        lives[editingIndex]
+    ) {
 
-                        reader.onload =
-                            function () {
+        photos =
+            lives[editingIndex].photos || [];
 
-                                resolve(
-                                    reader.result
-                                );
+    } else {
 
-                            };
+        photos =
+            await Promise.all(
 
-                        reader.onerror =
-                            function () {
+                files.map(file => {
 
-                                reject(
-                                    reader.error
-                                );
+                    return new Promise(
+                        (resolve, reject) => {
 
-                            };
+                            const reader =
+                                new FileReader();
 
-                        reader.readAsDataURL(file);
+                            reader.onload =
+                                function () {
 
-                    }
-                );
+                                    resolve(
+                                        reader.result
+                                    );
 
-            })
+                                };
 
-        );
+                            reader.onerror =
+                                function () {
+
+                                    reject(
+                                        reader.error
+                                    );
+
+                                };
+
+                            reader.readAsDataURL(file);
+
+                        }
+                    );
+
+                })
+
+            );
+
+    }
 
 
     // ====================
@@ -719,17 +862,51 @@ async function saveLive() {
 
 
     // ====================
-    // 保存
+    // 新規登録
     // ====================
 
-    let lives =
-        JSON.parse(
-            localStorage.getItem("lives")
-        ) || [];
+    if (editingIndex === -1) {
+
+        lives.push(live);
+
+        alert(
+            "ライブを保存しました！"
+        );
+
+    }
 
 
-    lives.push(live);
+    // ====================
+    // 編集
+    // ====================
 
+    else {
+
+        if (!lives[editingIndex]) {
+
+            alert(
+                "編集対象のライブが見つかりません。"
+            );
+
+            return;
+
+        }
+
+
+        lives[editingIndex] =
+            live;
+
+
+        alert(
+            "ライブを更新しました！"
+        );
+
+    }
+
+
+    // ====================
+    // 保存
+    // ====================
 
     localStorage.setItem(
         "lives",
@@ -737,9 +914,7 @@ async function saveLive() {
     );
 
 
-    alert(
-        "ライブを保存しました！"
-    );
+    editingIndex = -1;
 
 
     showHome();
@@ -789,7 +964,9 @@ function displayLives() {
         .forEach(function (live, reversedIndex) {
 
             const originalIndex =
-                lives.length - 1 - reversedIndex;
+                lives.length -
+                1 -
+                reversedIndex;
 
 
             const card =
@@ -885,7 +1062,8 @@ function showDetailByIndex(index) {
 
     hideAllScreens();
 
-    document.getElementById("detail").style.display = "block";
+    document.getElementById("detail").style.display =
+        "block";
 
 
     const lives =
@@ -899,7 +1077,9 @@ function showDetailByIndex(index) {
 
 
     const detailContent =
-        document.getElementById("detailContent");
+        document.getElementById(
+            "detailContent"
+        );
 
 
     if (!detailContent || !live) {
@@ -1077,7 +1257,237 @@ function showDetailByIndex(index) {
 
         </div>
 
+
+        <!-- ==================== -->
+        <!-- 編集・削除 -->
+        <!-- ==================== -->
+
+        <div class="detail-actions">
+
+            <button
+                class="edit-button"
+                onclick="editLive(${index})">
+
+                ✏️ このライブを編集
+
+            </button>
+
+
+            <button
+                class="delete-button"
+                onclick="deleteLive(${index})">
+
+                🗑️ このライブを削除
+
+            </button>
+
+        </div>
+
     `;
+
+}
+
+
+// ====================
+// ライブ編集
+// ====================
+
+function editLive(index) {
+
+    const lives =
+        JSON.parse(
+            localStorage.getItem("lives")
+        ) || [];
+
+
+    const live =
+        lives[index];
+
+
+    if (!live) {
+
+        alert(
+            "編集するライブが見つかりません。"
+        );
+
+        return;
+
+    }
+
+
+    editingIndex =
+        index;
+
+
+    hideAllScreens();
+
+
+    document.getElementById("form").style.display =
+        "block";
+
+
+    // ====================
+    // フォームへデータをセット
+    // ====================
+
+    document.getElementById("artist").value =
+        live.artist || "";
+
+
+    document.getElementById("tour").value =
+        live.tour || "";
+
+
+    document.getElementById("date").value =
+        live.date || "";
+
+
+    document.getElementById("startTime").value =
+        live.startTime || "";
+
+
+    document.getElementById("prefecture").value =
+        live.prefecture || "";
+
+
+    document.getElementById("venue").value =
+        live.venue || "";
+
+
+    document.getElementById("capacity").value =
+        live.capacity || "";
+
+
+    document.getElementById("members").value =
+        live.members || "";
+
+
+    document.getElementById("seat").value =
+        live.seat || "";
+
+
+    document.getElementById("ticketPrice").value =
+        live.ticketPrice || "";
+
+
+    document.getElementById("setlist").value =
+        live.setlist || "";
+
+
+    document.getElementById("memo").value =
+        live.memo || "";
+
+
+    document.getElementById("companion1").value =
+        live.companions &&
+        live.companions[0]
+            ? live.companions[0]
+            : "";
+
+
+    document.getElementById("companion2").value =
+        live.companions &&
+        live.companions[1]
+            ? live.companions[1]
+            : "";
+
+
+    document.getElementById("companion3").value =
+        live.companions &&
+        live.companions[2]
+            ? live.companions[2]
+            : "";
+
+
+    document.getElementById("weather").value =
+        live.weather || "";
+
+
+    document.getElementById("seatPosition").value =
+        live.seatPosition || "";
+
+
+    // 写真はセキュリティ上、
+    // 元の写真をfile inputへ戻すことはできない。
+    // 新しい写真を選ばなければ元写真を維持する。
+
+    const photos =
+        document.getElementById("photos");
+
+    if (photos) {
+
+        photos.value = "";
+
+    }
+
+
+    updateFormTitle();
+
+}
+
+
+// ====================
+// ライブ削除
+// ====================
+
+function deleteLive(index) {
+
+    const lives =
+        JSON.parse(
+            localStorage.getItem("lives")
+        ) || [];
+
+
+    const live =
+        lives[index];
+
+
+    if (!live) {
+
+        alert(
+            "削除するライブが見つかりません。"
+        );
+
+        return;
+
+    }
+
+
+    const liveName =
+        `${live.artist || "ライブ"} / ${live.tour || ""}`;
+
+
+    const confirmed =
+        confirm(
+            `「${liveName}」を削除しますか？\n\nこの操作は元に戻せません。`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    lives.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        "lives",
+        JSON.stringify(lives)
+    );
+
+
+    alert(
+        "ライブを削除しました。"
+    );
+
+
+    showHome();
 
 }
 
@@ -1100,6 +1510,7 @@ function showDetail() {
 
         document.getElementById("detail").style.display =
             "block";
+
 
         document.getElementById("detailContent").innerHTML = `
 
@@ -1142,7 +1553,9 @@ function updateStats() {
     // ====================
 
     const statsTotal =
-        document.getElementById("statsTotal");
+        document.getElementById(
+            "statsTotal"
+        );
 
 
     if (statsTotal) {
@@ -1158,7 +1571,9 @@ function updateStats() {
     // ====================
 
     const artistStats =
-        document.getElementById("artistStats");
+        document.getElementById(
+            "artistStats"
+        );
 
 
     if (artistStats) {
@@ -1181,7 +1596,8 @@ function updateStats() {
 
                 if (!artistCount[name]) {
 
-                    artistCount[name] = 0;
+                    artistCount[name] =
+                        0;
 
                 }
 
@@ -1192,15 +1608,20 @@ function updateStats() {
 
 
             const sortedArtists =
-                Object.entries(artistCount)
-                    .sort(
-                        (a, b) => b[1] - a[1]
-                    );
+                Object.entries(
+                    artistCount
+                )
+                .sort(
+                    (a, b) =>
+                        b[1] - a[1]
+                );
 
 
             artistStats.innerHTML =
                 sortedArtists
-                    .map(function ([name, count]) {
+                    .map(function (
+                        [name, count]
+                    ) {
 
                         return `
 
@@ -1231,7 +1652,9 @@ function updateStats() {
     // ====================
 
     const yearStats =
-        document.getElementById("yearStats");
+        document.getElementById(
+            "yearStats"
+        );
 
 
     if (yearStats) {
@@ -1254,12 +1677,16 @@ function updateStats() {
 
 
                 const year =
-                    live.date.substring(0, 4);
+                    live.date.substring(
+                        0,
+                        4
+                    );
 
 
                 if (!yearCount[year]) {
 
-                    yearCount[year] = 0;
+                    yearCount[year] =
+                        0;
 
                 }
 
@@ -1270,17 +1697,21 @@ function updateStats() {
 
 
             const sortedYears =
-                Object.entries(yearCount)
-                    .sort(
-                        (a, b) =>
-                            Number(b[0]) -
-                            Number(a[0])
-                    );
+                Object.entries(
+                    yearCount
+                )
+                .sort(
+                    (a, b) =>
+                        Number(b[0]) -
+                        Number(a[0])
+                );
 
 
             yearStats.innerHTML =
                 sortedYears
-                    .map(function ([year, count]) {
+                    .map(function (
+                        [year, count]
+                    ) {
 
                         return `
 
