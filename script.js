@@ -78,6 +78,8 @@ function showHome() {
 // ====================
 
 async function saveLive() {
+    
+    alert("saveLiveが呼ばれた！");
 
     const artist = document.getElementById("artist").value;
     const tour = document.getElementById("tour").value;
