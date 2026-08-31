@@ -782,3 +782,27 @@ h3 {
     border-radius: 14px;
     font-size: 16px;
 }
+
+/* ====================
+   統計ボタン
+==================== */
+
+.stats-button-area {
+    width: 100%;
+    margin: 24px 0 10px;
+    text-align: center;
+}
+
+.stats-button-area button {
+    display: inline-block;
+    width: auto;
+    min-width: 180px;
+    margin: 0;
+    padding: 14px 24px;
+    background: #555;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+}
