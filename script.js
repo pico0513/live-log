@@ -131,7 +131,6 @@ async function saveLive() {
     displayLives();
 }
 
-
 function displayLives() {
 
     const lives = JSON.parse(localStorage.getItem("lives")) || [];
@@ -148,20 +147,52 @@ function displayLives() {
 
         card.className = "live-card";
 
+        let photosHTML = "";
+
+        if (live.photos && live.photos.length > 0) {
+
+            photosHTML = `
+                <div class="live-photos">
+                    ${live.photos.map(photo => `
+                        <img src="${photo}" alt="ライブ写真">
+                    `).join("")}
+                </div>
+            `;
+
+        }
+
         card.innerHTML = `
-            <h3>${live.artist}</h3>
-            <p>${live.tour}</p>
-            <p>📅 ${live.date}</p>
-            <p>📍 ${live.venue}</p>
-            <p>💰 ¥${live.ticketPrice}</p>
-            <p>${live.memo}</p>
+
+            <h3>${live.artist || ""}</h3>
+
+            <p>${live.tour || ""}</p>
+
+            <p>📅 ${live.date || ""}</p>
+
+            <p>🕐 ${live.startTime || ""}</p>
+
+            <p>📍 ${live.prefecture || ""} ${live.venue || ""}</p>
+
+            <p>👥 ${live.members || ""}</p>
+
+            <p>💺 ${live.seat || ""}</p>
+
+            <p>💰 ¥${live.ticketPrice || ""}</p>
+
+            <p>🌤️ ${live.weather || ""}</p>
+
+            <p>${live.memo || ""}</p>
+
+            ${photosHTML}
+
         `;
 
         liveList.appendChild(card);
+
     });
+
 }
 
-displayLives();
 
 function showDetail() {
     document.getElementById("home").style.display = "none";
