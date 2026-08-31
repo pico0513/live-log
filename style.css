@@ -400,3 +400,17 @@ select:focus {
 .memory-box p {
     margin: 10px 0 20px;
 }
+
+.live-photos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.live-photos img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
