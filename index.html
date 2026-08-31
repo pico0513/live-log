@@ -14,12 +14,17 @@
 
 <div class="container">
 
+    <!-- ==================== -->
     <!-- ヘッダー -->
+    <!-- ==================== -->
+
     <header class="header">
 
         <h1>🎫 LiveLog</h1>
 
-        <p class="subtitle">わたしのライブ記録</p>
+        <p class="subtitle">
+            わたしのライブ記録
+        </p>
 
     </header>
 
@@ -31,9 +36,12 @@
     <div id="home">
 
         <!-- 次のライブ -->
+
         <section class="home-section">
 
-            <p class="section-label">NEXT LIVE</p>
+            <p class="section-label">
+                NEXT LIVE
+            </p>
 
             <div class="next-live-card">
 
@@ -67,6 +75,7 @@
 
 
         <!-- 前のライブ -->
+
         <section class="home-section">
 
             <p class="section-label">
@@ -76,7 +85,8 @@
             <div class="simple-card">
 
                 <p class="days">
-                    前のライブから <strong>--</strong> 日
+                    前のライブから
+                    <strong>--</strong> 日
                 </p>
 
                 <p>
@@ -89,6 +99,7 @@
 
 
         <!-- 1年前の今日 -->
+
         <section class="home-section">
 
             <p class="section-label">
@@ -111,14 +122,19 @@
 
 
         <!-- 総参戦数 -->
+
         <section class="total-section">
 
             <p class="section-label">
                 TOTAL LIVE
             </p>
 
-            <p class="count" id="count">
+            <p
+                class="count"
+                id="count">
+
                 0
+
             </p>
 
             <p>
@@ -129,24 +145,30 @@
 
 
         <!-- ライブ登録 -->
-<button
-    class="add-button"
-    onclick="showForm()">
 
-    ＋ ライブを記録
+        <button
+            class="add-button"
+            onclick="showForm()">
 
-</button>
+            ＋ ライブを記録
+
+        </button>
 
 
-<!-- 統計画面ボタン -->
-<div class="stats-button-area">
+        <!-- 統計 -->
 
-    <button onclick="showStats()">
-        📊 統計を見る
-    </button>
+        <div class="stats-button-area">
 
-</div>
+            <button onclick="showStats()">
 
+                📊 統計を見る
+
+            </button>
+
+        </div>
+
+
+        <!-- ライブ一覧 -->
 
         <div id="liveList"></div>
 
@@ -158,7 +180,9 @@
     <!-- ライブ登録画面 -->
     <!-- ==================== -->
 
-    <div id="form" style="display: none;">
+    <div
+        id="form"
+        style="display: none;">
 
         <h2 class="section-title">
             ＋ ライブを記録
@@ -167,7 +191,9 @@
 
         <!-- 公演情報 -->
 
-        <h3>🎫 公演情報</h3>
+        <h3>
+            🎫 公演情報
+        </h3>
 
 
         <label>
@@ -321,7 +347,9 @@
 
         <!-- セトリ -->
 
-        <h3>🎵 セトリ</h3>
+        <h3>
+            🎵 セトリ
+        </h3>
 
         <label>
             セトリ
@@ -335,7 +363,9 @@
 
         <!-- 思い出 -->
 
-        <h3>🥹 思い出</h3>
+        <h3>
+            🥹 思い出
+        </h3>
 
 
         <label>
@@ -438,7 +468,9 @@
     <!-- ライブ詳細画面 -->
     <!-- ==================== -->
 
-    <div id="detail" style="display: none;">
+    <div
+        id="detail"
+        style="display: none;">
 
         <div id="detailContent"></div>
 
@@ -454,7 +486,9 @@
     <!-- 統計画面 -->
     <!-- ==================== -->
 
-    <div id="stats" style="display: none;">
+    <div
+        id="stats"
+        style="display: none;">
 
         <h2 class="section-title">
             📊 統計
@@ -488,7 +522,6 @@
         </section>
 
 
-
         <!-- アーティスト別 -->
 
         <section class="stats-section">
@@ -506,7 +539,6 @@
             </div>
 
         </section>
-
 
 
         <!-- 年別 -->
@@ -528,17 +560,54 @@
         </section>
 
 
+        <!-- 都道府県別 -->
+
+        <section class="stats-section">
+
+            <p class="section-label">
+                🗾 PREFECTURE
+            </p>
+
+            <div
+                class="stats-card"
+                id="prefectureStats">
+
+                まだライブの記録がありません
+
+            </div>
+
+        </section>
+
+
+        <!-- 会場別 -->
+
+        <section class="stats-section">
+
+            <p class="section-label">
+                🏟️ VENUE
+            </p>
+
+            <div
+                class="stats-card"
+                id="venueStats">
+
+                まだライブの記録がありません
+
+            </div>
+
+        </section>
+
+
         <button onclick="showHome()">
             ← ホームに戻る
         </button>
 
     </div>
 
-
 </div>
 
 
-<script src="script.js?v=4"></script>
+<script src="script.js?v=5"></script>
 
 </body>
 
