@@ -61,7 +61,11 @@ async function saveLive() {
     const ticketPrice = document.getElementById("ticketPrice").value;
     const setlist = document.getElementById("setlist").value;
     const memo = document.getElementById("memo").value;
-    const companions = document.getElementById("companions").value;
+    const companions = [
+    document.getElementById("companion1").value,
+    document.getElementById("companion2").value,
+    document.getElementById("companion3").value
+].filter(name => name.trim() !== "");
     const weather = document.getElementById("weather").value;
     const seatPosition = document.getElementById("seatPosition").value;
 
