@@ -767,3 +767,18 @@ h3 {
     border: 1px solid var(--border);
 
 }
+
+/* 統計ボタン */
+
+.stats-button-area {
+    text-align: center;
+    margin: 20px 0 10px;
+}
+
+.stats-button-area button {
+    background: #555;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 16px;
+}
